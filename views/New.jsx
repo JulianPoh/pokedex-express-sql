@@ -6,24 +6,25 @@ class New extends React.Component {
       <html>
         <head />
         <body>
+        <h3>CREATE A NEW POKEMON!</h3>
           <form className="pokemon-form" method="POST" action="/pokemons">
             <div className="pokemon-attribute">
-              id:<input name="id" type="text" />
+              <input name="id" type="text" placeholder="New Pokemon ID"/>
             </div>
             <div className="pokemon-attribute">
-              num:<input name="num" type="text" />
+              <input name="num" type="text" placeholder="New Pokemon Num"/>
             </div>
             <div className="pokemon-attribute">
-              name:<input name="name" type="text" />
+              <input name="name" type="text" placeholder="New Pokemon Name"/>
             </div>
             <div className="pokemon-attribute">
-              img:<input name="img" type="text" />
+              <input name="img" type="text" placeholder="New Pokemon Image"/>
             </div>
             <div className="pokemon-attribute">
-              height:<input name="height" type="text" />
+              <input name="height" type="text" placeholder="New Pokemon Height"/>
             </div>
             <div className="pokemon-attribute">
-              weight:<input name="weight" type="text" />
+              <input name="weight" type="text" placeholder="New Pokemon Weight"/>
             </div>
             <input type="submit" value="Submit" />
           </form>

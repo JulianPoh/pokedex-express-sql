@@ -6,11 +6,11 @@ class Home extends React.Component {
       <html>
         <head />
         <body>
-          <h1>Welcome to Pokedex</h1>
+          <h1>Welcome to the Pokedex</h1>
           <ul>
             {this.props.pokemon.map(pokemon => (
               <li key={pokemon.id}>
-                {pokemon.name}
+                {pokemon.name}<img src={pokemon.img}/>
               </li>
             ))}
           </ul>
