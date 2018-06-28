@@ -42,17 +42,29 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
-app.get('/', (req, response) => {
-  // query database for all pokemon
-  // respond with HTML page displaying all pokemon
-  const queryString = 'SELECT * from pokemon'
-  pool.query(queryString, (err, result) => {
+
+/*
+ * ===================================
+ * CREATE NEW POKEMON
+ * ===================================
+*/
+app.get('/pokemon/new', (request, response) => {
+  // respond with HTML page with form to create new pokemon
+  response.render('New');
+});
+
+app.post('/pokemon/', (req, response) => {
+  let params = req.body;
+
+  const queryString = 'INSERT INTO pokemon(id, num, name, img, height, weight) VALUES($1, $2, $3, $4, $5, $6)'
+  const values = [params.id, params.num, params.name, params.img, params.height, params.weight];
+  pool.query(queryString, values, (err, res) => {
     if (err) {
-      console.error('query error:', err.stack);
+      console.log('query error:', err.stack);
     } else {
-      console.log('query result:', result);
-      let pokemon = result.rows;
-      response.render( 'Home', {pokemon: pokemon} );
+      console.log('query result:', res);
+      // redirect to home page
+      response.redirect('/');
     }
   });
 });
@@ -76,32 +88,6 @@ app.get('/pokemon/:id', (request, response) => {
           response.render('Pokemon', {pokemon: queryResult.rows[0]});
         }
     })
-});
-
-/*
- * ===================================
- * CREATE NEW POKEMON
- * ===================================
-*/
-app.get('/new', (request, response) => {
-  // respond with HTML page with form to create new pokemon
-  response.render('New');
-});
-
-app.post('/pokemon', (req, response) => {
-  let params = req.body;
-
-  const queryString = 'INSERT INTO pokemon(id, num, name, img, height, weight) VALUES($1, $2, $3, $4, $5, $6)'
-  const values = [params.id, params.num, params.name, params.img, params.height, params.weight];
-  pool.query(queryString, values, (err, res) => {
-    if (err) {
-      console.log('query error:', err.stack);
-    } else {
-      console.log('query result:', res);
-      // redirect to home page
-      response.redirect('/');
-    }
-  });
 });
 
 
@@ -129,6 +115,54 @@ app.post('/:id', (req, response) => {
     }
   });
 });
+
+
+/*
+ * ===================================
+ * DELETE POKEMON
+ * ===================================
+*/
+app.get('/pokemon/:id/delete', (request, response) => {
+  response.render('Delete');
+});
+
+app.post('/:id', (req, response) => {
+  let params = req.body;
+
+  const queryString = 'UPDATE pokemon SET name=$1, img=$2, height=$3, weight=$4'
+  const values = [params.name, params.img, params.height, params.weight,];
+  pool.query(queryString, values, (err, res) => {
+    if (err) {
+      console.log('query error:', err.stack);
+    } else {
+      console.log('query result:', res);
+      // redirect to home page
+      response.redirect('/');
+    }
+  });
+});
+
+
+/*
+ * ===================================
+ * SHOW ALL POKEMON
+ * ===================================
+*/
+app.get('/', (req, response) => {
+  // query database for all pokemon
+  // respond with HTML page displaying all pokemon
+  const queryString = 'SELECT * from pokemon'
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      console.error('query error:', err.stack);
+    } else {
+      console.log('query result:', result);
+      let pokemon = result.rows;
+      response.render( 'Home', {pokemon: pokemon} );
+    }
+  });
+});
+
 
 /**
  * ===================================
